@@ -74,4 +74,88 @@ matplotlib>=3.5.0
 scikit-learn>=1.0.0
 seaborn>=0.11.0
 keras-preprocessing>=1.1.2
+
+Prediction:
+
+==========
+
+# Bee Species Predictor
+import tensorflow as tf
+import numpy as np
+from tensorflow.keras.preprocessing import image
+
+# Load trained bee model
+model = tf.keras.models.load_model('INSERT THE NAME OF YOUR MODEL FILE HERE') 
+
+
+CLASS_NAMES = [
+    "Agapostemon splendens (Bicolored Sweat Bee)",
+    "Agapostemon virescens (Metallic Green Sweat Bee)",
+    "Apis mellifera (Western Honey Bee)",
+    "Bombus bimaculatus (Two-spotted Bumble Bee)",
+    "Bombus griseocollis (Brown-belted Bumble Bee)",
+    "Bombus impatiens (Common Eastern Bumble Bee)",
+    "Bombus pensylvanicus (American Bumble Bee)",
+    "Bombus terricola (Yellow-banded Bumble Bee)",
+    "Colletes inaequalis (Unequal Cellophane Bee)",
+    "Halictus ligatus (Brown Sweat Bee)",
+    "Halictus rubicundus (Orange-legged Furrow Bee)",
+    "Osmia lignaria (Blue Orchard Mason Bee)",
+    "Peponapis pruinosa (Squash Bee)",
+    "Xylocopa micans (Southern Carpenter Bee)",
+    "Xylocopa virginica (Eastern Carpenter Bee)"
+]
+
+def predict_bee_species(img_path):
+    """Predict bee species from an image file."""
+    img = image.load_img(img_path, target_size=(300, 300))
+    img_array = image.img_to_array(img)
+    img_array = tf.keras.applications.efficientnet.preprocess_input(img_array)
+    img_array = np.expand_dims(img_array, axis=0)
+
+    predictions = model.predict(img_array)
+    predicted_class = CLASS_NAMES[np.argmax(predictions)]
+    confidence = np.max(predictions) * 100
+
+    print(f"Predicted: {predicted_class} ({confidence:.1f}% confidence)")
+
+# Example usage
+predict_bee_species("INSERT YOUR TESTING IMAGE HERE")
+
+==========
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
